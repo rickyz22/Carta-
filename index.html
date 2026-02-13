@@ -17,11 +17,8 @@
   --accent:#c62828;
   --accent-2:#ff6b6b;
   --muted:#dcd6d6;
-  --glass: rgba(255,255,255,0.04);
   --max-width:760px;
   --radius:18px;
-  --shadow-strong: 0 18px 60px rgba(198,40,40,0.18);
-  --tap-size: 48px;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -31,7 +28,6 @@ body{
   color:var(--muted);
   font-family:'Lora', serif;
   -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
   text-rendering:optimizeLegibility;
   line-height:1.5;
   display:flex;
@@ -41,13 +37,8 @@ body{
   touch-action: manipulation;
 }
 
-/* Reduce motion preference */
-@media (prefers-reduced-motion: reduce){
-  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important}
-}
-
 /* =========================
-   SOBRE (pantalla inicial)
+   SOBRE INICIAL
    ========================= */
 #pantallaSobre{
   position:fixed;
@@ -59,97 +50,41 @@ body{
   background: radial-gradient(ellipse at center, rgba(0,0,0,0.55), rgba(0,0,0,0.85));
   padding:16px;
 }
-
-/* responsive envelope sizing */
 #sobre{
   width:92vw;
   max-width:420px;
   aspect-ratio: 16/10;
-  max-height:360px;
   background: linear-gradient(180deg,#120808 0%, #1a0b0b 100%);
   border-radius:calc(var(--radius) + 6px);
   position:relative;
-  box-shadow: var(--shadow-strong);
+  box-shadow: 0 18px 60px rgba(198,40,40,0.2);
   cursor:pointer;
-  transform-style:preserve-3d;
-  transition: transform 520ms cubic-bezier(.2,.9,.2,1), box-shadow 300ms;
+  transition: transform 520ms cubic-bezier(.2,.9,.2,1);
   display:flex;
   align-items:center;
   justify-content:center;
   overflow:hidden;
-  padding:8px;
-  -webkit-user-select:none;
-  user-select:none;
-  -webkit-tap-highlight-color: transparent;
 }
-
-/* envelope decorative layer */
-#sobre::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
-  pointer-events:none;
-  border-radius:inherit;
-}
-
-/* tapa (flap) */
 #tapa{
   position:absolute;
   inset:0;
   background: linear-gradient(180deg,#8b0f0f,#3b0000);
   clip-path: polygon(0 0, 100% 0, 50% 56%);
   transform-origin: top center;
-  transform: perspective(800px) rotateX(0deg);
   transition: transform 900ms cubic-bezier(.2,.9,.2,1);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.6) inset;
   z-index:4;
 }
-
-/* paper inside */
-#papel{
-  position:absolute;
-  inset:8% 6%;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border-radius:12px;
-  border: 1px solid rgba(255,255,255,0.02);
-  transform: translateZ(20px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  pointer-events:none;
-  z-index:2;
-  opacity:0.98;
-}
-
-/* texto del sobre */
 #textoSobre{
   position:relative;
   z-index:6;
   font-family:'Cinzel', serif;
   color:#ffdede;
-  font-size:clamp(16px,4.2vw,26px);
-  text-shadow: 0 6px 18px rgba(198,40,40,0.25);
-  letter-spacing:0.6px;
-  pointer-events:none;
-  padding:6px 12px;
+  font-size:clamp(18px,5vw,26px);
   text-align:center;
 }
-
-/* hover microinteraction */
-#sobre:active{ transform: translateY(4px) scale(.997) }
-
-/* abierto state (improved) */
-#abierto #tapa,
-#sobre.abierto #tapa{
-  transform: perspective(800px) rotateX(180deg) translateY(-2%);
-  box-shadow: 0 -6px 40px rgba(0,0,0,0.6) inset;
-}
-
-/* fade out pantalla */
+#sobre.abierto #tapa{ transform: perspective(800px) rotateX(180deg) translateY(-2%); }
 .ocultar{ animation: fadeOut 700ms forwards; }
-@keyframes fadeOut{ to{ opacity:0; visibility:hidden; transform:scale(.98) } }
+@keyframes fadeOut{ to{ opacity:0; visibility:hidden; } }
 
 /* =========================
    CONTENEDOR CARTA
@@ -157,136 +92,79 @@ body{
 .container{
   width:100%;
   max-width:var(--max-width);
-  background:
-    linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
-    url('rosa.jpg');
+  background: linear-gradient(180deg, rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('rosa.jpg');
   background-size:cover;
   background-position:center;
   border-radius:var(--radius);
-  padding:clamp(18px,4.2vw,34px);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 6px 30px rgba(198,40,40,0.08);
+  padding:clamp(20px,5vw,40px);
   display:none;
-  position:relative;
-  overflow:hidden;
-  margin:28px auto;
+  margin:20px auto;
+  padding-bottom: 80px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
 }
 
-/* subtle vignette */
-.container::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  box-shadow: inset 0 120px 120px rgba(0,0,0,0.45);
-  pointer-events:none;
-}
-
-/* fuego glow decorative */
-.container::before{
-  content:"";
-  position:absolute;
-  inset:-30px;
-  background:
-    radial-gradient(circle at 20% 100%, rgba(255,140,0,0.08), transparent 40%),
-    radial-gradient(circle at 50% 100%, rgba(255,0,0,0.08), transparent 45%),
-    radial-gradient(circle at 80% 100%, rgba(255,215,0,0.06), transparent 40%);
-  filter: blur(18px);
-  z-index:-1;
-  animation: fuego 3s infinite alternate;
-}
-@keyframes fuego{ 0%{ transform:translateY(0); } 100%{ transform:translateY(-28px); } }
+h1{ font-family:'UnifrakturCook', cursive; color:var(--accent); font-size:clamp(26px,6vw,42px); margin:0; text-shadow: 0 0 15px rgba(198,40,40,0.6); }
+.subtitle{ color:#ffdede; font-style:italic; margin-bottom:20px; }
+p{ margin:15px 0; color: #f6eaea; font-size:clamp(16px,4vw,19px); }
+.signature{ margin-top:25px; font-weight:700; color:#ffdede; }
 
 /* =========================
-   TIPOGRAFÍA Y TEXTO
-   ========================= */
-h1{
-  font-family:'UnifrakturCook', cursive;
-  color:var(--accent);
-  margin:0 0 6px 0;
-  font-size:clamp(26px,6vw,40px);
-  text-shadow: 0 0 18px rgba(198,40,40,0.9);
-}
-.subtitle{
-  color:#ffdede;
-  margin:0 0 14px 0;
-  font-style:italic;
-  font-size:clamp(13px,3.2vw,16px);
-}
-p{
-  margin:10px 0;
-  color: #f6eaea;
-  font-size:clamp(14px,3.2vw,18px);
-  text-align:left;
-}
-
-/* signature */
-.signature{
-  margin-top:18px;
-  font-weight:700;
-  color:#ffdede;
-}
-
-/* =========================
-   CONTROLES Y BOTONES (touch-friendly)
+   BOTÓN CON EFECTO LATIDO
    ========================= */
 .controls{
   display:flex;
-  gap:10px;
+  flex-direction: column;
+  gap:20px;
   align-items:center;
-  justify-content:center;
-  margin-top:18px;
-  flex-wrap:wrap;
-}
-.btn{
-  min-height:var(--tap-size);
-  min-width:88px;
-  background: linear-gradient(180deg,var(--accent), var(--accent-2));
-  color:white;
-  border:none;
-  padding:10px 16px;
-  border-radius:12px;
-  cursor:pointer;
-  box-shadow: 0 8px 22px rgba(198,40,40,0.18);
-  transition: transform 140ms ease, box-shadow 140ms ease;
-  font-size:16px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  touch-action: manipulation;
-}
-.btn:active{ transform: translateY(2px) }
-.btn:hover{ transform: translateY(-4px); box-shadow: 0 18px 40px rgba(198,40,40,0.26); }
-
-.range{
-  width:140px;
-  height:8px;
-  background:linear-gradient(90deg,#b71c1c,#ff8a8a);
-  border-radius:999px;
-  -webkit-appearance:none;
-  appearance:none;
-  outline:none;
-}
-.range::-webkit-slider-thumb{
-  -webkit-appearance:none;
-  width:18px;height:18px;border-radius:50%;
-  background:#fff;border:3px solid var(--accent);
-  box-shadow:0 6px 14px rgba(0,0,0,0.35);
+  margin-top:40px;
 }
 
-/* =========================
-   GATO
-   ========================= */
-#gato{
-  font-size:48px;
-  cursor:pointer;
-  display:inline-block;
-  margin-top:12px;
-  user-select:none;
-  line-height:1;
+.btn-regalo {
+  width: 100%;
+  max-width: 320px;
+  background: linear-gradient(135deg, #c62828, #ff6b6b);
+  font-size: 1.3rem;
+  padding: 18px;
+  font-weight: bold;
+  border-radius: 50px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(198,40,40,0.4);
+  animation: latido 1.5s infinite; /* EFECTO LATIDO */
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
-.bailar{ animation: bailar 0.45s infinite; }
-@keyframes bailar{ 0%{ transform:rotate(-12deg) } 50%{ transform:rotate(12deg) } 100%{ transform:rotate(-12deg) } }
+
+@keyframes latido {
+  0% { transform: scale(1); box-shadow: 0 10px 25px rgba(198,40,40,0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 15px 35px rgba(198,40,40,0.6); }
+  100% { transform: scale(1); box-shadow: 0 10px 25px rgba(198,40,40,0.4); }
+}
+
+.btn-musica {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 12px 25px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+}
+
+.vol-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0,0,0,0.3);
+    padding: 8px 15px;
+    border-radius: 20px;
+}
+
+.range{ width:100px; accent-color: var(--accent); cursor: pointer; }
 
 /* =========================
    MODAL REGALO
@@ -298,234 +176,124 @@ p{
   align-items:center;
   justify-content:center;
   z-index:120;
-  background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.85));
+  background: rgba(0,0,0,0.92);
   padding:20px;
 }
 #regaloContenido{
-  width:100%;
-  max-width:520px;
-  background: linear-gradient(180deg,#111,#0d0d0d);
-  border-radius:14px;
-  padding:18px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-  color:#fff;
+  background: #111;
+  border: 2px solid var(--accent);
+  border-radius: 25px;
+  padding: 40px 30px;
+  text-align: center;
+  max-width: 450px;
+  box-shadow: 0 0 50px rgba(198,40,40,0.3);
 }
 
-/* responsive tweaks */
-@media (max-width:520px){
-  #gato{ font-size:40px }
-  .range{ width:120px }
-  h1{ font-size:24px }
-  .container{ padding:18px }
-  .btn{ min-width:72px; font-size:15px }
-  #sobre{ max-width:360px; max-height:300px }
-  #textoSobre{ font-size:18px }
+@media (min-width: 600px) {
+  .controls { flex-direction: column; }
+  .btn-regalo { width: 350px; }
 }
 </style>
 </head>
 <body>
 
-<!-- AUDIO (carga diferida) -->
-<audio id="musica" preload="none" loop>
-  <source id="musicaSrc" src="ozzy.mp3" type="audio/mpeg">
-  Tu navegador no soporta audio.
+<audio id="musica" loop>
+  <source src="ozzy.mp3" type="audio/mpeg">
 </audio>
 
-<!-- SOBRE INICIAL -->
-<div id="pantallaSobre" aria-hidden="false">
-  <div id="sobre" role="button" aria-label="Abrir sobre" tabindex="0">
-    <div id="tapa" aria-hidden="true"></div>
-    <div id="papel" aria-hidden="true"></div>
+<div id="pantallaSobre">
+  <div id="sobre" onclick="openEnvelope()">
+    <div id="tapa"></div>
     <div id="textoSobre">Para Mi Amor ❤️</div>
   </div>
 </div>
 
-<!-- CARTA -->
-<main class="container" id="carta" aria-live="polite" role="main">
+<main class="container" id="carta">
   <h1>Para Mi Amor ❤️</h1>
   <div class="subtitle">Desde el primer día hasta siempre 💖</div>
 
   <p>Amor,</p>
-
   <p>Quiero que sepas lo mucho que te amo y lo importante que sos para mí.</p>
-
   <p>Sos la mujer más fuerte que conozco. Me encanta verte sonreír, me da paz, me da fuerzas, me hace sentir en casa.</p>
-
   <p>No aflojes nunca. Vos podés con todo, incluso cuando dudás. Yo lo sé, y siempre voy a estar para recordártelo.</p>
-
   <p>Todo lo mío es tuyo. Mis sueños, mis proyectos, mi vida… y también mi familia.</p>
-
-  <p>Hoy sos parte de ellos, y para todos sos alguien muy especial. Te quieren, te cuidan y te valoran, igual que yo.</p>
-
-  <p>Gracias por elegirme todos los días. Gracias por acompañarme. Gracias por ser vos.</p>
+  <p>Gracias por elegirme todos los días. Gracias por ser vos.</p>
 
   <p class="signature">Te amo con todo mi corazón ❤️<br>Siempre tuyo,<br><strong>tu Moreno</strong></p>
 
-  <p style="margin-top:8px"><strong>P.D.: El bombón que falta en la caja… sos vos 😘🍫</strong></p>
+  <p style="margin-top:20px; color:var(--accent-2); text-align: center;">
+    <strong>P.D.: El bombón que falta en la caja… sos vos 😘🍫</strong>
+  </p>
 
-  <div class="controls" aria-hidden="false">
-    <button class="btn" id="btnRegalo" aria-haspopup="dialog">💝 Tu espejo</button>
-
-    <button class="btn" id="btnPlay" aria-pressed="false">🎵 Reproducir</button>
-
-    <label style="display:flex;align-items:center;gap:8px;color:#ffdede;margin:0 6px;">
-      Vol
-      <input id="volumen" class="range" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volumen" />
-    </label>
+  <div class="controls">
+    <button class="btn-regalo" onclick="openRegalo()">💝 VER TU REGALO</button>
+    
+    <div style="display:flex; flex-direction: column; gap:15px; align-items:center;">
+        <button class="btn-musica" id="btnPlay" onclick="toggleMusica()">🎵 Música</button>
+        <div class="vol-container">
+            <span style="font-size: 12px; color: #aaa;">VOL</span>
+            <input id="volumen" class="range" type="range" min="0" max="1" step="0.1" value="1" oninput="ajustarVolumen(this.value)" />
+        </div>
+    </div>
   </div>
 
-  <div style="text-align:center;margin-top:12px">
-    <div id="gato" role="button" aria-label="Tocar gato" tabindex="0">🐈‍⬛</div>
-  </div>
+  <div style="text-align:center;margin-top:40px; font-size: 45px; cursor: pointer;" onclick="playCat()">🐈‍⬛</div>
 </main>
 
-<!-- MODAL REGALO -->
-<div id="regalo" role="dialog" aria-modal="true" aria-hidden="true">
-  <div id="regaloContenido">
-    <h2 style="margin-top:0">💝 Mi regalo</h2>
-    <p>Te regalo este espejo para que puedas verte con los mismos ojos con los que yo te miro: hermosa, única y perfecta ❤️</p>
-    <div style="display:flex;justify-content:flex-end;margin-top:14px">
-      <button class="btn" id="cerrarRegalo">Cerrar</button>
-    </div>
+<div id="regalo" onclick="closeRegalo()">
+  <div id="regaloContenido" onclick="event.stopPropagation()">
+    <h2 style="color:var(--accent); font-size: 2rem; margin-top: 0;">💝 Mi regalo</h2>
+    <p style="font-size: 1.2rem; line-height: 1.6;">Te regalo este espejo para que puedas verte con los mismos ojos con los que yo te miro: hermosa, única y perfecta ❤️</p>
+    <button class="btn-regalo" style="margin-top:30px; animation: none;" onclick="closeRegalo()">Cerrar</button>
   </div>
 </div>
 
 <script>
-/* =========================
-   Element cache
-   ========================= */
-const sobre = document.getElementById('sobre');
-const pantallaSobre = document.getElementById('pantallaSobre');
-const carta = document.getElementById('carta');
 const musica = document.getElementById('musica');
-const musicaSrc = document.getElementById('musicaSrc');
 const btnPlay = document.getElementById('btnPlay');
-const volumen = document.getElementById('volumen');
-const btnRegalo = document.getElementById('btnRegalo');
-const regalo = document.getElementById('regalo');
-const cerrarRegaloBtn = document.getElementById('cerrarRegalo');
-const gato = document.getElementById('gato');
 
-let pistas = ['ozzy.mp3','romantica1.mp3','romantica2.mp3'];
-let pistaIndex = 0;
-
-/* Accessibility: allow keyboard activation */
 function openEnvelope(){
-  if(sobre.classList.contains('abierto')) return;
-  sobre.classList.add('abierto');
-  sobre.setAttribute('aria-pressed','true');
-  sobre.style.boxShadow = '0 28px 90px rgba(198,40,40,0.22)';
-
-  // preload audio on first interaction
-  if(musica.getAttribute('preload') === 'none'){
-    musica.setAttribute('preload','auto');
-    musicaSrc.src = pistas[pistaIndex];
-    musica.load();
-  }
-
-  // sequence: flap animates, then reveal content
+  document.getElementById('sobre').classList.add('abierto');
   setTimeout(()=>{
-    pantallaSobre.classList.add('ocultar');
-    setTimeout(()=>{ pantallaSobre.style.display='none'; },700);
-    carta.style.display='block';
-    // try to play audio
-    musica.play().then(()=>{
-      btnPlay.textContent = '⏸ Pausar';
-      btnPlay.setAttribute('aria-pressed','true');
-    }).catch(()=>{
-      btnPlay.textContent = '🎵 Reproducir';
-      btnPlay.setAttribute('aria-pressed','false');
-    });
-  },700);
+    document.getElementById('pantallaSobre').classList.add('ocultar');
+    setTimeout(()=>{ 
+        document.getElementById('pantallaSobre').style.display='none'; 
+        document.getElementById('carta').style.display='block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 700);
+    musica.play();
+  }, 700);
 }
 
-/* Click and keyboard handlers for envelope */
-sobre.addEventListener('click', openEnvelope);
-sobre.addEventListener('keydown', (e)=>{
-  if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEnvelope(); }
-});
-
-/* =========================
-   Audio controls
-   ========================= */
-btnPlay.addEventListener('click', ()=>{
+function toggleMusica(){
   if(musica.paused){
-    musica.play().then(()=> {
-      btnPlay.textContent = '⏸ Pausar';
-      btnPlay.setAttribute('aria-pressed','true');
-    }).catch(()=>{ /* blocked */ });
+    musica.play();
+    btnPlay.textContent = '⏸ Pausar';
   } else {
     musica.pause();
-    btnPlay.textContent = '🎵 Reproducir';
-    btnPlay.setAttribute('aria-pressed','false');
+    btnPlay.textContent = '🎵 Música';
   }
-});
-
-volumen.addEventListener('input', (e)=>{
-  musica.volume = parseFloat(e.target.value);
-});
-
-/* =========================
-   Modal regalo (focus management)
-   ========================= */
-btnRegalo.addEventListener('click', openRegalo);
-cerrarRegaloBtn.addEventListener('click', closeRegalo);
-
-function openRegalo(){
-  regalo.style.display = 'flex';
-  regalo.setAttribute('aria-hidden','false');
-  cerrarRegaloBtn.focus();
 }
-function closeRegalo(){
-  regalo.style.display = 'none';
-  regalo.setAttribute('aria-hidden','true');
-  btnRegalo.focus();
-}
-regalo.addEventListener('click', (e)=>{
-  if(e.target === regalo) closeRegalo();
-});
-document.addEventListener('keydown', (e)=>{
-  if(e.key === 'Escape' && regalo.style.display === 'flex') closeRegalo();
-});
 
-/* =========================
-   Gato interaction
-   ========================= */
-const emojis = ['🐈‍⬛','🐱','😺','😻','🐾','😽'];
+function ajustarVolumen(v){ musica.volume = v; }
+
+function openRegalo(){ 
+    document.getElementById('regalo').style.display = 'flex'; 
+}
+
+function closeRegalo(){ 
+    document.getElementById('regalo').style.display = 'none'; 
+}
+
 function playCat(){
-  gato.classList.add('bailar');
-  const original = gato.textContent;
-  let i = 0;
-  const interval = setInterval(()=>{
-    gato.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-    i++;
-    if(i > 6){
-      clearInterval(interval);
-      gato.classList.remove('bailar');
-      gato.textContent = '😻';
-      setTimeout(()=> gato.textContent = original, 1200);
-    }
-  },120);
+  const msgs = ["¡Miau! ❤️", "Sos hermosa", "Te amo", "Purrr..."];
+  alert(msgs[Math.floor(Math.random()*msgs.length)]);
 }
-gato.addEventListener('click', playCat);
-gato.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playCat(); } });
-
-/* =========================
-   Init
-   ========================= */
-(function init(){
-  musica.volume = parseFloat(volumen.value);
-  btnPlay.textContent = '🎵 Reproducir';
-  // If reduced motion is preferred, skip the envelope screen
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    pantallaSobre.style.display = 'none';
-    carta.style.display = 'block';
-  }
-})();
 </script>
 
 </body>
 </html>
+
 
 
 
